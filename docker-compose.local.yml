@@ -7,10 +7,9 @@ services:
       dockerfile: Dockerfile
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
-#    volumes:
-#      - ./core:/usr/src/app
-#      - /home/webapps/tender_v2/staticfiles:/usr/src/app/staticfiles
-#      - /home/webapps/tender_v2/mediafiles:/usr/src/app/mediafiles
+    volumes:
+      - .:/app
+
 #    environment:
 #      SQL_HOST: "bd"
     ports:
