@@ -1,9 +1,9 @@
 from django.urls import path
 
-from shortener.views import ShortenerGet
+from shortener.views import ShortenerGetPostView
 
 urlpatterns = [
-    path("shorteners/", ShortenerGet.as_view({
-        "get": "list"
+    path("shorteners/", ShortenerGetPostView.as_view({
+        "get": "list", "post": "create"
     }), name="contractor_tender")
 ]
