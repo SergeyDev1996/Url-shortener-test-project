@@ -1,10 +1,17 @@
+from datetime import datetime, timedelta
+
+from django.utils import timezone
 from django.db import models
 
 
+def now_plus_90():
+    return datetime.now() + timedelta(days=90)
+
+
 class URL(models.Model):
-    key = models.CharField(unique=True, max_length=255)
-    secret_key = models.CharField(unique=True, max_length=255)
+
     target_url = models.CharField(max_length=400)
-    is_active = models.BooleanField(default=True)
-    clicks = models.IntegerField(default=0)
     url = models.CharField(max_length=400)
+    creation_time = models.DateTimeField(auto_now_add=True)
+    expiry = models.DateTimeField(default=now_plus_90)
+

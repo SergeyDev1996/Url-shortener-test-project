@@ -1,19 +1,33 @@
+import datetime
 import secrets
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
+from rest_framework.exceptions import ValidationError
+from rest_framework.generics import get_object_or_404
 
 from shortener.models import URL
-from shortener.serializers import ShortenerSerializer
+from shortener.serializers import ShortenerSerializer, ShortenerGetSerializer
 
 
-class ShortenerGetPostView(viewsets.ModelViewSet):
+class ShortenerPostView(viewsets.ModelViewSet):
     serializer_class = ShortenerSerializer
-    queryset = URL.objects.all()
-    # if not validators.url(url.target_url):
-    #     raise_bad_request(message="Your provided URL is not valid")
 
-    # chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    # key = "".join(secrets.choice(chars) for _ in range(5))
-    # secret_key = "".join(secrets.choice(chars) for _ in range(8))
+
+class ShortenerRetrieveView(viewsets.ModelViewSet):
+    serializer_class = ShortenerGetSerializer
+    queryset = URL.objects.all()
+
+    def get_queryset(self):
+        time_now = datetime.datetime.now()
+        return URL.objects.filter(expiry__lt=time_now).delete()
+
+    def get_object(self):
+        self.get_queryset()
+        url = self.kwargs.get("url")
+        obj = URL.objects.filter(url=url).first()
+        if not obj:
+            raise Http404
+        return obj
+
