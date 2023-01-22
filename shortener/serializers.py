@@ -30,10 +30,13 @@ class ShortenerSerializer(serializers.ModelSerializer):
         max_expire = timezone.now() + datetime.timedelta(days=365)
         min_expire = timezone.now() + datetime.timedelta(days=1)
         expiration = attrs.get("expiry")
-        if expiration < timezone.now():
-            raise ValidationError({"expiry": "The expiration time can not be in the past."})
-        if expiration > max_expire or expiration < min_expire:
-            raise ValidationError({"expiry": "The maximum expiration time for the link is 1 year, the minimum - 1 day."})
+        # if expiration:
+        #     if expiration < timezone.now():
+        #         raise ValidationError({"expiry": "The expiration time can not be in the past."})
+        #     if expiration > max_expire or expiration < min_expire:
+        #         raise ValidationError({"expiry": "The maximum expiration time for the link is 1 year,"
+        #                                          " the minimum - 1 day."})
+
         return attrs
 
     class Meta:
@@ -43,7 +46,8 @@ class ShortenerSerializer(serializers.ModelSerializer):
                             )
         fields = read_only_fields + (
             "target_url",
-            "expiry"
+            "expiry",
+            "creation_time"
         )
 
 

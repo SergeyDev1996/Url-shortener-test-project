@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 
+from UrlShortener.views import redirect_view
 from upload.views import image_upload
-
+#
 urlpatterns = [
     path("", image_upload, name="upload"),
+    path("<str:url>/", redirect_view, name="redirect"),
     path('admin/', admin.site.urls),
     path('api/', include("shortener.urls"))
 ]
