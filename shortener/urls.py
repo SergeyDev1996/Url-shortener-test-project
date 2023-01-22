@@ -10,5 +10,5 @@ urlpatterns = [
         {
             "get": "retrieve"
         }
-    ), name="create_link")
+    ), name="retrieve_link")
 ]

@@ -34,18 +34,17 @@ class ShortenerSerializer(serializers.ModelSerializer):
                 raise ValidationError({"expiry": "The maximum expiration time"
                                                  " for the link is 1 year,"
                                                  " the minimum - 1 day."})
-
         return attrs
 
     class Meta:
         model = URL
         read_only_fields = (
             "url",
+            "creation_time",
                             )
         fields = read_only_fields + (
             "target_url",
             "expiry",
-            "creation_time"
         )
 
 
