@@ -1,6 +1,4 @@
 from django.http import HttpResponseRedirect, HttpResponseNotFound
-from django.shortcuts import render
-import requests
 
 from shortener.models import URL
 
